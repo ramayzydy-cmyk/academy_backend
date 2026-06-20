@@ -49,6 +49,7 @@ class LoginAPIView(APIView):
                 "id": student.id,
                 "full_name": student.full_name,
                 "email": student.email,
+                "bio": student.bio or "",
             },
             status=status.HTTP_200_OK,
         )

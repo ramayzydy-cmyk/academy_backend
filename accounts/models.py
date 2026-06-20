@@ -29,6 +29,8 @@ class Student(models.Model):
         choices=LEVEL_CHOICES,
     )
 
+    bio = models.TextField(blank=True, default="")
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

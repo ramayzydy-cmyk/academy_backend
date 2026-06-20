@@ -53,6 +53,9 @@ class HomeDashboardAPIView(APIView):
 
         # Get latest word of the day
         wotd = WordOfTheDay.objects.filter(is_active=True).order_by('-created_at').first()
+        if not wotd:
+            wotd = WordOfTheDay.objects.order_by('-created_at').first()
+            
         wotd_data = None
         if wotd:
             wotd_data = {
@@ -159,6 +162,9 @@ class CompleteLessonAPIView(APIView):
                 StudentBadge.objects.create(student=student, badge=badge)
                 stats.badges_earned += 1
                 new_badges_earned.append(badge.title)
+                
+            # Increase level progress
+            stats.level_progress = min(100, stats.level_progress + 10)
                 
             stats.save()
             
