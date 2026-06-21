@@ -11,5 +11,4 @@ tzdata==2026.1
 SpeechRecognition
 pydub
 eng_to_ipa
-google-generativeai
 gunicorn
