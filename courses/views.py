@@ -13,10 +13,6 @@ from .models import (
     Skill,
     Unit,
     Lesson,
-    Book,
-    BookSeries,
-    CurriculumSeries,
-    Curriculum,
     LevelTest,
     LevelTestQuestion,
     LevelTestChoice,
@@ -27,7 +23,6 @@ from .models import (
     Choice,
     StudentQuizProgress,
     StudentLessonProgress,
-    NewsPost,
     OnlineCourse,
 )
 
@@ -37,14 +32,9 @@ from .serializers import (
     SkillSerializer,
     UnitSerializer,
     LessonSerializer,
-    BookSerializer,
-    BookSeriesSerializer,
-    CurriculumSerializer,
-    CurriculumSeriesSerializer,
     QuizSerializer,
     QuestionSerializer,
     LevelTestSerializer,
-    NewsPostSerializer,
     OnlineCourseSerializer,
 )
 
@@ -106,23 +96,6 @@ class LessonListAPIView(ListAPIView):
         if student_id:
             context["student_id"] = student_id
         return context
-
-
-class BookListAPIView(ListAPIView):
-    serializer_class = BookSerializer
-    queryset = Book.objects.all().order_by("order")
-
-class BookSeriesListAPIView(ListAPIView):
-    serializer_class = BookSeriesSerializer
-    queryset = BookSeries.objects.all().order_by("order")
-
-class CurriculumSeriesListAPIView(ListAPIView):
-    serializer_class = CurriculumSeriesSerializer
-    queryset = CurriculumSeries.objects.all().order_by("order")
-
-class CurriculumListAPIView(ListAPIView):
-    serializer_class = CurriculumSerializer
-    queryset = Curriculum.objects.all().order_by("order")
 
 class LevelTestListAPIView(ListAPIView):
     serializer_class = LevelTestSerializer
@@ -520,11 +493,7 @@ class LevelTestSubmitAPIView(APIView):
 
 
 
-# --- News --------------------------------------------------------------------
 
-class NewsPostViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = NewsPost.objects.all().order_by('-created_at')
-    serializer_class = NewsPostSerializer
 
 
 # --- Online Courses ----------------------------------------------------------

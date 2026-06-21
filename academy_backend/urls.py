@@ -22,10 +22,6 @@ urlpatterns = [
         include("courses.urls"),
     ),
 
-    path(
-        "api/reader/",
-        include("reader.urls"),
-    ),
 
 ]
 

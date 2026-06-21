@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     "accounts",
     "api",
     "courses",
-    'reader',
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

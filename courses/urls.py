@@ -9,11 +9,7 @@ urlpatterns = [
     path('skills/<int:skill_id>/units/', views.UnitListAPIView.as_view(), name='units'),
     path('units/<int:unit_id>/lessons/', views.LessonListAPIView.as_view(), name='lessons'),
 
-    # Library
-    path('books/', views.BookListAPIView.as_view(), name='books'),
-    path('book-series/', views.BookSeriesListAPIView.as_view(), name='book-series'),
-    path('curriculums/', views.CurriculumListAPIView.as_view(), name='curriculums'),
-    path('curriculum-series/', views.CurriculumSeriesListAPIView.as_view(), name='curriculum-series'),
+
 
     # Level Tests
     path('level-tests/', views.LevelTestListAPIView.as_view(), name='level-tests'),
@@ -24,7 +20,6 @@ urlpatterns = [
     path('lessons/<int:lesson_id>/quiz/submit/', views.QuizSubmitAPIView.as_view(), name='quiz-submit'),
     path('lessons/<int:lesson_id>/complete/', views.LessonCompleteAPIView.as_view(), name='lesson-complete'),
 
-    # News & Online Courses
-    path('news/', views.NewsPostViewSet.as_view({'get': 'list'}), name='news'),
+    # Online Courses
     path('online-courses/', views.OnlineCourseViewSet.as_view({'get': 'list'}), name='online-courses'),
 ]

@@ -1,9 +1,9 @@
 from django.contrib import admin
 from .models import (
-    Category, CourseLevel, Skill, Unit, Lesson, Book, BookSeries, CurriculumSeries, Curriculum,
+    Category, CourseLevel, Skill, Unit, Lesson,
     Quiz, Question, Choice, StudentLessonProgress, StudentQuizProgress, StudentQuestionAnswer,
     LevelTest, LevelTestQuestion, LevelTestChoice, StudentLevelTestProgress, StudentLevelTestAnswer,
-    NewsPost, OnlineCourse, OnlineLecture, RecentActivity, WordOfTheDay,
+    OnlineCourse, OnlineLecture, RecentActivity, WordOfTheDay,
     Badge, StudentBadge, CompletedLesson
 )
 
@@ -205,26 +205,6 @@ class QuestionAdmin(admin.ModelAdmin):
         return obj.text[:60]
     text_preview.short_description = 'Question'
 
-
-@admin.register(BookSeries)
-class BookSeriesAdmin(admin.ModelAdmin):
-    list_display = ['title', 'title_ar', 'order']
-
-@admin.register(CurriculumSeries)
-class CurriculumSeriesAdmin(admin.ModelAdmin):
-    list_display = ['title', 'title_ar', 'order']
-
-@admin.register(Curriculum)
-class CurriculumAdmin(admin.ModelAdmin):
-    list_display = ['title', 'series', 'order']
-    list_filter = ['series']
-
-@admin.register(Book)
-class BookAdmin(admin.ModelAdmin):
-    list_display = ['title', 'series', 'order']
-    list_filter = ['series']
-
-
 @admin.register(StudentLessonProgress)
 class StudentLessonProgressAdmin(admin.ModelAdmin):
     list_display = ['student_id', 'lesson', 'completed_at']
@@ -281,13 +261,6 @@ class StudentLevelTestAnswerAdmin(admin.ModelAdmin):
 
 
 
-
-# --- News --------------------------------------------------------------------
-
-@admin.register(NewsPost)
-class NewsPostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'created_at', 'updated_at']
-    search_fields = ['title', 'title_ar', 'content', 'content_ar']
 
 
 # --- Online Courses ----------------------------------------------------------

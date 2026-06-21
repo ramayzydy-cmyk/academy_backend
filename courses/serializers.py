@@ -6,10 +6,6 @@ from .models import (
     Skill,
     Unit,
     Lesson,
-    Book,
-    BookSeries,
-    CurriculumSeries,
-    Curriculum,
     Quiz,
     Question,
     Choice,
@@ -19,12 +15,9 @@ from .models import (
     LevelTestQuestion,
     LevelTestChoice,
     StudentLevelTestProgress,
-    NewsPost,
     OnlineCourse,
     OnlineLecture,
 )
-
-from reader.models import ReaderBook
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -234,84 +227,6 @@ class LessonSerializer(serializers.ModelSerializer):
         return hasattr(obj, 'quiz')
 
 
-class BookSerializer(serializers.ModelSerializer):
-    reader_book_id = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Book
-
-        fields = [
-            "id",
-            "title",
-            "title_ar",
-            "description",
-            "cover_image",
-            "pdf_file",
-            "order",
-            "series",
-            "reader_book_id",
-        ]
-
-    def get_reader_book_id(self, obj):
-        reader_book = ReaderBook.objects.filter(
-            source_type="book",
-            source_id=obj.id,
-            is_active=True,
-        ).first()
-
-        if reader_book:
-            return reader_book.id
-
-        return None
-
-class BookSeriesSerializer(serializers.ModelSerializer):
-    books = serializers.SerializerMethodField()
-    class Meta:
-        model = BookSeries
-        fields = ['id', 'title', 'title_ar', 'description', 'cover_image', 'order', 'books']
-
-    def get_books(self, obj):
-        return BookSerializer(obj.books.all(), many=True, context=self.context).data
-
-class CurriculumSerializer(serializers.ModelSerializer):
-    reader_book_id = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Curriculum
-
-        fields = [
-            "id",
-            "title",
-            "title_ar",
-            "description",
-            "pdf_file",
-            "audio_file",
-            "cover_image",
-            "order",
-            "series",
-            "reader_book_id",
-        ]
-
-    def get_reader_book_id(self, obj):
-        reader_book = ReaderBook.objects.filter(
-            source_type="curriculum",
-            source_id=obj.id,
-            is_active=True,
-        ).first()
-
-        if reader_book:
-            return reader_book.id
-
-        return None
-
-class CurriculumSeriesSerializer(serializers.ModelSerializer):
-    curriculums = serializers.SerializerMethodField()
-    class Meta:
-        model = CurriculumSeries
-        fields = ['id', 'title', 'title_ar', 'description', 'cover_image', 'order', 'curriculums']
-
-    def get_curriculums(self, obj):
-        return CurriculumSerializer(obj.curriculums.all(), many=True, context=self.context).data
 
 class LevelTestChoiceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -390,12 +305,7 @@ class LevelTestSerializer(serializers.ModelSerializer):
 
 
 
-# --- News --------------------------------------------------------------------
 
-class NewsPostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NewsPost
-        fields = '__all__'
 
 
 # --- Online Courses ----------------------------------------------------------

@@ -78,65 +78,6 @@ class Lesson(models.Model):
         return self.title
 
 
-class BookSeries(models.Model):
-    title = models.CharField(max_length=200)
-    title_ar = models.CharField(max_length=200, blank=True)
-    description = models.TextField(blank=True)
-    cover_image = models.ImageField(upload_to='book_series/', blank=True, null=True)
-    order = models.IntegerField(default=0)
-
-    class Meta:
-        ordering = ['order']
-        verbose_name_plural = 'Book Series'
-
-    def __str__(self):
-        return self.title
-
-class CurriculumSeries(models.Model):
-    title = models.CharField(max_length=200)
-    title_ar = models.CharField(max_length=200, blank=True)
-    description = models.TextField(blank=True)
-    cover_image = models.ImageField(upload_to='curriculum_series/', blank=True, null=True)
-    order = models.IntegerField(default=0)
-
-    class Meta:
-        ordering = ['order']
-        verbose_name_plural = 'Curriculum Series'
-
-    def __str__(self):
-        return self.title
-
-class Curriculum(models.Model):
-    series = models.ForeignKey(CurriculumSeries, on_delete=models.SET_NULL, null=True, blank=True, related_name='curriculums')
-    title = models.CharField(max_length=200)
-    title_ar = models.CharField(max_length=200, blank=True)
-    description = models.TextField(blank=True)
-    pdf_file = models.FileField(upload_to='curriculums/', blank=True, null=True)
-    audio_file = models.FileField(upload_to='curriculum_audio/', blank=True, null=True)
-    cover_image = models.ImageField(upload_to='curriculum_covers/', blank=True, null=True)
-    order = models.IntegerField(default=0)
-
-    class Meta:
-        ordering = ['order']
-
-    def __str__(self):
-        return self.title
-
-class Book(models.Model):
-    series = models.ForeignKey(BookSeries, on_delete=models.SET_NULL, null=True, blank=True, related_name='books')
-    title = models.CharField(max_length=200)
-    title_ar = models.CharField(max_length=200, blank=True)
-    description = models.TextField(blank=True)
-    pdf_file = models.FileField(upload_to='books/', blank=True, null=True)
-    cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True)
-    order = models.IntegerField(default=0)
-
-    class Meta:
-        ordering = ['order']
-
-    def __str__(self):
-        return self.title
-
 
 # ─── Quiz System ─────────────────────────────────────────────────────────────
 
@@ -336,20 +277,6 @@ class StudentLevelTestAnswer(models.Model):
     def __str__(self):
         return f"Progress {self.progress.id} - Q{self.question.id}"
 
-
-# --- News --------------------------------------------------------------------
-
-class NewsPost(models.Model):
-    title = models.CharField(max_length=255, help_text="News title in English")
-    title_ar = models.CharField(max_length=255, help_text="News title in Arabic")
-    content = models.TextField(help_text="News content in English")
-    content_ar = models.TextField(help_text="News content in Arabic")
-    image = models.ImageField(upload_to='news_images/', blank=True, null=True, help_text="Optional news image")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.title
 
 
 # --- Online Courses ----------------------------------------------------------
