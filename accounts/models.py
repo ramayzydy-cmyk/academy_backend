@@ -30,6 +30,7 @@ class Student(models.Model):
     )
 
     bio = models.TextField(blank=True, default="")
+    photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -176,3 +176,75 @@ class CompleteLessonAPIView(APIView):
             }, status=status.HTTP_200_OK)
             
         return Response({"success": True, "message": "Lesson already completed"}, status=status.HTTP_200_OK)
+
+
+class GetStudentProfileAPIView(APIView):
+    """Returns student profile data (bio, photo url, full_name, level, stats)."""
+    def get(self, request, student_id):
+        try:
+            student = Student.objects.get(id=student_id)
+        except Student.DoesNotExist:
+            return Response({"success": False, "error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        stats, _ = StudentStats.objects.get_or_create(student=student)
+
+        photo_url = None
+        if student.photo:
+            photo_url = request.build_absolute_uri(student.photo.url)
+
+        return Response({
+            "success": True,
+            "full_name": student.full_name,
+            "email": student.email,
+            "bio": student.bio or "",
+            "photo_url": photo_url,
+            "level_label": stats.current_level_label,
+            "level_progress": stats.level_progress,
+            "streak_days": stats.streak_days,
+            "xp_points": stats.xp_points,
+            "lessons_completed": stats.lessons_completed,
+            "badges_earned": stats.badges_earned,
+        }, status=status.HTTP_200_OK)
+
+
+class UpdateProfileAPIView(APIView):
+    """Updates student bio and/or photo. Accepts multipart/form-data."""
+    def patch(self, request, student_id):
+        try:
+            student = Student.objects.get(id=student_id)
+        except Student.DoesNotExist:
+            return Response({"success": False, "error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Update bio if provided
+        if 'bio' in request.data:
+            student.bio = request.data['bio']
+
+        # Update full_name if provided
+        if 'full_name' in request.data:
+            student.full_name = request.data['full_name']
+
+        # Update photo if provided
+        if 'photo' in request.FILES:
+            # Delete old photo to save storage
+            if student.photo:
+                try:
+                    import os
+                    if os.path.isfile(student.photo.path):
+                        os.remove(student.photo.path)
+                except Exception:
+                    pass
+            student.photo = request.FILES['photo']
+
+        student.save()
+
+        photo_url = None
+        if student.photo:
+            photo_url = request.build_absolute_uri(student.photo.url)
+
+        return Response({
+            "success": True,
+            "message": "Profile updated successfully",
+            "full_name": student.full_name,
+            "bio": student.bio,
+            "photo_url": photo_url,
+        }, status=status.HTTP_200_OK)
